@@ -16,18 +16,33 @@ class NavBar extends React.Component {
           </div>
 
           <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul className="nav navbar-nav">
-              <li><a href="?#">Link</a></li>
-              <li><a href="?#">Link</a></li>
-              <li><a href="?#">Link</a></li>
-            </ul>
-            <ul className="nav navbar-nav navbar-right">
-              <li><a href="?#">Login / Logout</a></li>
-            </ul>
+            { this.showMenu() }
+            { this.showLogoutButton() }
           </div>
         </div>
       </nav>
     )
+  }
+
+  showLogoutButton() {
+    if (localStorage.getItem('token') !== null) {
+      return (
+        <ul className="nav navbar-nav navbar-right">
+          <li><a href="?#" onClick={ () => localStorage.removeItem('token') }>Logout</a></li>
+        </ul>
+      )
+    }
+  }
+
+  showMenu() {
+    if (localStorage.getItem('token') !== null) {
+      return (
+        <ul className="nav navbar-nav">
+          <li><a href="?#">List Data</a></li>
+          <li><a href="?#">Buat Data Baru</a></li>
+        </ul>
+      )
+    }
   }
 }
  export default NavBar

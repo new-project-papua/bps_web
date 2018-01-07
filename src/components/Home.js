@@ -1,48 +1,46 @@
 import React from 'react'
-import axios from 'axios'
+import { connect } from 'react-redux'
 
 class Home extends React.Component {
   constructor() {
     super()
-    this.state = {
-      people: []
-    }
+    this.state = {}
   }
 
   render() {
     return(
       <div>
-        <h1>INI KOMPONEN HOME</h1>
-        { this.showData() }
+        <h1>WELCOME!</h1>
+        <h4>Aplikasi pendataan keluarga v0.1.0</h4>
       </div>
     )
   }
 
-  componentWillMount() {
-    this.fetchData()
+  componentDidMount() {
+    this.loginCheck()
   }
 
-  fetchData() {
-    axios({
-      method: 'GET',
-      url: 'https://swapi.co/api/people/'
-    })
-    .then(response => this.setState({ people: response.data.results }))
-    .catch(err => console.log(err))
-  }
-
-  showData() {
-    return(
-      <ul>
-        {this.state.people.map((data, idx) => {
-          console.log(data)
-          return(
-            <li key={idx}>{ data.name }</li>
-          )
-        })}
-      </ul>
-    )
+  loginCheck() {
+    if (localStorage.getItem('token') == null) {
+      this.props.history.push('/login')
+    } else {
+      this.props.history.push('/')
+    }
   }
 }
 
-export default Home
+const mapStateToProps = (state) => {
+  return {
+    user_id: state.userReducer.user_id,
+    first_name: state.userReducer.first_name,
+    last_name: state.userReducer.last_name
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {}
+}
+
+const connectComponent = connect(mapStateToProps, mapDispatchToProps)(Home)
+
+export default connectComponent
